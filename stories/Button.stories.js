@@ -1,45 +1,64 @@
 import { Button } from "../components/Button";
 
-// More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Example/Button",
+  title: "Button",
   component: Button,
-  parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
-    layout: "centered",
+
+  args: {
+    label: "Button",
+    variant: "primary",
+    size: "lg",
   },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
-  tags: ["autodocs"],
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: "color" },
+  parameters: {
+    layout: "centered",
   },
 };
 
-// More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Primary = {
   args: {
-    primary: true,
-    label: "Button",
+    // label: "Button",
+    variant: "primary",
   },
 };
 
 export const Secondary = {
   args: {
-    label: "Button",
+    // label: "Button",
+    variant: "secondary",
   },
 };
 
-export const Large = {
+export const Tertiary = {
   args: {
-    size: "large",
-    label: "Button",
+    // label: "Button",
+    variant: "tertiary",
   },
 };
 
 export const Small = {
   args: {
-    size: "small",
-    label: "Button",
+    size: "sm",
+    // label: "Button",
+  },
+};
+
+export const Medium = {
+  args: {
+    size: "md",
+    // label: "Button",
+  },
+};
+
+export const Large = {
+  args: {
+    size: "lg",
+    // label: "Button",
+  },
+};
+
+export const Skeleton = {
+  args: {
+    variant: "skeleton",
+    label: "",
   },
 };

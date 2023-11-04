@@ -1,0 +1,11 @@
+.tooltip::after {
+  content: "\25BC";
+  font-size: 2rem;
+  color: black;
+
+  transform: rotate(-90deg);
+  position: absolute;
+  left: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+}

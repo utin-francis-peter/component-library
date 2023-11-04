@@ -1,11 +1,39 @@
-/**
- * Primary UI component for user interaction
- */
+export const Button = ({
+  className,
+  children,
+  label,
+  type = "button",
+  variant = "primary",
+  size = "sm",
+  onClick,
+  ...rest
+}) => {
+  const variantStyle =
+    variant == "primary"
+      ? "bg-blue-400 "
+      : variant == "secondary"
+      ? "bg-blue-600"
+      : variant == "tertiary"
+      ? "bg-blue-800"
+      : variant == "skeleton"
+      ? "animate-pulse space-x-4 bg-slate-700 "
+      : "";
+  const sizeStyle =
+    size == "sm"
+      ? "px-10 py-1"
+      : size == "md"
+      ? "px-20 py-2"
+      : size == "lg"
+      ? "px-40 py-5"
+      : "";
 
-export const Button = ({ primary, backgroundColor, size, label, ...props }) => {
   return (
-    <button type="button" className="bg-red-600">
-      {label}
+    <button
+      type={type}
+      onClick={onClick}
+      className={`block rounded-full text-white ${className} ${variantStyle} ${sizeStyle}`}
+      {...rest}>
+      {children}
     </button>
   );
 };
