@@ -4,38 +4,53 @@ import { useRef } from "react";
 
 const FileUploader = ({
   btnLabel,
-  desc,
   accept,
-  btnType,
-  onChange,
-  disabled,
   canAcceptMultiple,
   maxFileSize,
   canDragAndDrop,
+  canUseIcon,
+  iconColor,
+  iconSize,
+  canSelectMultiple,
+  handleUpload,
 }) => {
   /*
 Props desc:
 - btnLabel = file upload btn label
-- desc: description text that provides more context about file upload (max file size and accepted file type(s)
 - accept: a string array of accepted file types
-btnType: is file upload btn a submit or normal btn element?
-- onChange: a click handler fxn invoke when input field value changes
-- disabled: a boolean condition that disabled file upload btn
-- canAcceptMultiple: a boolean condition that allows the input file to accept multiple files upload
+- canAcceptMultiple: allows the file input to accept multiple files selection
+- canAcceptMultiple: a boolean condition that allows the input file to accept multiple files selection
 - maxFileSize: allowed size of file to be uploaded
+- handleUpload: callback function that handles upload of file to the server
   */
 
   const [sizeLimit, setSizeLimit] = useState({});
-  // sizeLimit value would be used to set max permitted file size and check that uploaded file size falls within the specified size range
   const [selectedFileName, setSelectedFileName] = useState(null);
+  const [fileList, setFileList] = useState(null);
   const [fileInBase64, setFileInBase64] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [canHighlight, setCanHighlight] = useState(false);
+
   const inputRef = useRef(null);
 
-  console.log(fileInBase64);
-  //TODO some browsers may not support max-size. run size validation with JS before initiating file upload procedures
+  const handleAccept = () => {
+    const res = accept?.map((item, i, arr) => {
+      /*
+        item[i] !== last item in the list? `${item}, `
+        ...
+        item[i]== item[arr.length-1]? `and ${item} `
+        */
 
-  const handleSelection = () => {
+      if (item[i] !== item[arr.length - 1]) {
+        return `${item}, `;
+      } else {
+        return `and ${item} `;
+      }
+    });
+    return res;
+  };
+
+  const handleSelection = (files) => {
     //  FUNCTION converts specified sizeLimit from its original unit size to a byte size
     const handleSizeLimitConversion = (sizeLimit) => {
       const { size: specifiedSize, unit: specifiedUnit } = sizeLimit;
@@ -55,10 +70,16 @@ btnType: is file upload btn a submit or normal btn element?
       }
     };
 
-    const singleFile = inputRef.current?.files[0];
+    // TODO: HANDLING MULTIPLE FILES SELECTION AND UPLOAD
+    // check files list length.when 1, extract file at position 0. else, convert the list to an array and map over each item(process the data and store the list)
+
+    // console.log("all files include:", files);
+    const singleFile = files[0];
     const { size: selectedFileSize, name } = singleFile;
 
     setSelectedFileName(name);
+
+    // console.log(selectedFileName, selectedFileSize);
 
     const specifiedByteSize = handleSizeLimitConversion(sizeLimit);
     if (selectedFileSize <= specifiedByteSize) {
@@ -79,24 +100,11 @@ btnType: is file upload btn a submit or normal btn element?
     //   TODO handle multiple files upload
   };
 
-  const formatAccept = () => {
-    const res = accept?.map((item, i, arr) => {
-      /*
-        item[i] !== last item in the list? `${item}, `
-        ...
-        item[i]== item[arr.length-1]? `and ${item} `
-        */
-
-      if (item[i] !== item[arr.length - 1]) {
-        return `${item}, `;
-      } else {
-        return `and ${item}. `;
-      }
-    });
-    return res;
+  const preventDefaults = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
   };
 
-  //   side effect functions below runs each time a new maxFileSize is specified; pulls out the size:number and unit:string and store separately into sizeLimit state
   useEffect(() => {
     const extractMaxSizeValue = (_maxFileSize) => {
       console.log(typeof _maxFileSize);
@@ -124,51 +132,106 @@ btnType: is file upload btn a submit or normal btn element?
       setSizeLimit(res);
     }
   }, [maxFileSize]);
-
+  console.log("can highlight?", canHighlight);
   return (
-    <div>
+    <>
       <h4 className="font-semibold">Upload files</h4>
-      <label className="text-sm text-gray-500">
-        Max file size is {maxFileSize}. Only {formatAccept()}
+      <label draggable={false} className="text-sm text-gray-500">
+        Max file size is {maxFileSize}. Only {handleAccept()}
         files are supported.
       </label>
       <input
-        className="hidden"
         ref={inputRef}
         type="file"
+        hidden
         accept={[...accept]}
-        onChange={handleSelection}
+        multiple={canSelectMultiple}
+        onChange={(e) => handleSelection(e.target.files)}
       />
 
-      {canDragAndDrop ? (
-        <button
-          onClick={() => inputRef.current?.click()}
-          className="border border-dashed border-gray-500 p-3 text-blue-500 block mt-3 w-full min-h-[30vh] hover:border-blue-600 hover:border-solid hover:border-[2px] transition-colors ease-in delay-150">
-          Drag and drop file here or click to upload
-        </button>
-      ) : (
-        <Button
-          size="md"
-          className="rounded-none"
-          onClick={() => inputRef.current?.click()}>
-          {btnLabel}
-        </Button>
-      )}
-
       {selectedFileName && fileInBase64 && (
-        <div className="shadow-md inline-block p-2 mt-3 gap-2">
-          <div className="flex items-center gap-3">
-            <p>{selectedFileName}</p>
-            <button
-              onClick={() => setFileInBase64(null)}
-              className="text-red-300 transition-colors ease-in delay-150 hover:text-red-600">
-              <i className="fa-solid fa-close"></i>
-            </button>
+        <div className="mb-3">
+          <div className="shadow-md inline-block p-2 mt-3 gap-2">
+            <div className="flex items-center gap-3">
+              <p>{selectedFileName}</p>
+              <button
+                onClick={() => setFileInBase64(null)}
+                className="text-red-300 transition-colors ease-in delay-150 hover:text-red-600">
+                <i className="fa-solid fa-close"></i>
+              </button>
+            </div>
           </div>
         </div>
       )}
+
+      {canDragAndDrop ? (
+        <>
+          {fileInBase64 ? (
+            <Button size="md" className="rounded-none " onClick={handleUpload}>
+              <span className="flex items-center gap3">
+                <i className="fa-solid fa-cloud-arrow-up"></i>
+                <span>Upload</span>
+              </span>
+            </Button>
+          ) : (
+            <button
+              onDragEnter={(e) => {
+                preventDefaults(e);
+                setCanHighlight(true);
+              }}
+              onDragLeave={(e) => {
+                preventDefaults(e);
+                setCanHighlight(false);
+              }}
+              onDragOver={(e) => {
+                preventDefaults(e);
+                setCanHighlight(true);
+              }}
+              onDrop={(e) => {
+                preventDefaults(e);
+                setCanHighlight(false);
+                handleSelection(e.dataTransfer.files);
+              }}
+              onClick={() => inputRef.current?.click()}
+              className={`border border-gray-500 p-3 text-gray-500 block mt-3 w-full min-h-[30vh] hover:border-blue-600 hover:border-solid hover:border-[2px] transition-colors ease-in delay-150 ${
+                canHighlight
+                  ? "border-[2px] border-solid border-blue-600"
+                  : "border-dashed"
+              }`}>
+              {canUseIcon && (
+                <span className={`block mb-3 ${iconColor} ${iconSize}`}>
+                  <i className="fa-solid fa-download"></i>
+                </span>
+              )}
+
+              <span className=" flex items-center justify-center gap-1 group">
+                <span>Drag and drop file here or</span>
+                <span className="font-bold group-hover:text-blue-700">
+                  click to upload
+                </span>
+              </span>
+            </button>
+          )}
+        </>
+      ) : (
+        <Button
+          size="md"
+          className="rounded-none flex items-center gap2"
+          onClick={() =>
+            !fileInBase64 ? inputRef.current?.click() : handleUpload()
+          }>
+          {fileInBase64 ? (
+            <span>
+              <i className="fa-solid fa-cloud-arrow-up"></i> Upload
+            </span>
+          ) : (
+            btnLabel
+          )}
+        </Button>
+      )}
+
       {errorMessage && <p className="text-red-600">*{errorMessage}</p>}
-    </div>
+    </>
   );
 };
 

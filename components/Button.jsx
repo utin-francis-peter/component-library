@@ -6,6 +6,7 @@ export const Button = ({
   variant = "primary",
   size = "sm",
   onClick,
+  isDisabled,
   ...rest
 }) => {
   const variantStyle =
@@ -31,7 +32,8 @@ export const Button = ({
     <button
       type={type}
       onClick={onClick}
-      className={`block rounded-full text-white ${className} ${variantStyle} ${sizeStyle}`}
+      disabled={isDisabled}
+      className={`block rounded-full text-white disabled:cursor-not-allowed disabled:opacity-60 ${className} ${variantStyle} ${sizeStyle}`}
       {...rest}>
       {children}
     </button>

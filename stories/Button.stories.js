@@ -5,9 +5,11 @@ export default {
   component: Button,
 
   args: {
-    label: "Button",
+    children: "Button",
+    // label: "Button",
     variant: "primary",
     size: "lg",
+    isDisabled: false,
   },
   parameters: {
     layout: "centered",

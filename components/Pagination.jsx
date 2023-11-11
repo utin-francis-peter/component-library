@@ -14,7 +14,7 @@ const Pagination = ({ data, itemsPerPage, setItemsPerPage }) => {
   // console.log(
   //   "logging MIN and MAX item index: ",
   //   firstItemIndex,
-  //   lastItemIndex
+  //   lastItemIndexconsole.log("CURRENT PAGE:", currentPage);
   // );
 
   // since an array holds page number, create a new structure that groups current pages in view together.
@@ -40,10 +40,23 @@ const Pagination = ({ data, itemsPerPage, setItemsPerPage }) => {
     }
   }, [data, itemsPerPage]);
 
-  // console.log("CURRENT PAGE:", currentPage);
+  // create a useEffect function that fires when pageNo and itemsPerPage state changes
+  useEffect(() => {
+    const calculateIndexes = () => {
+      const newFirstItemIndex = (currentPage - 1) * itemsPerPage + 1;
+      const newLastItemIndex = Math.min(
+        currentPage * itemsPerPage,
+        data.length
+      );
+
+      setFirstItemIndex(newFirstItemIndex);
+      setLastItemIndex(newLastItemIndex);
+    };
+
+    calculateIndexes();
+  }, [itemsPerPage, currentPage, data.length]);
   return (
     <div>
-      {/* below, data gets mapped over and rendered. NEEDED HEREE?? */}
       {groupedData.length > 0 &&
         groupedData[currentPage - 1]?.map((d, i) => <Todo key={i} todo={d} />)}
 
