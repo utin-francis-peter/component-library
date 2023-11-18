@@ -1,4 +1,4 @@
-import FileUploader from "../components/FileUploader/index";
+import FileUploader from "../components/FileUploader/FileUploader";
 
 export default {
   title: "FileUploader",

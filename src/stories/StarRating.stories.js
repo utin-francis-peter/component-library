@@ -1,4 +1,4 @@
-import StarRating from "../components/StarRating/index";
+import StarRating from "../components/StarRating/StarRating";
 
 export default {
   title: "StarRating",

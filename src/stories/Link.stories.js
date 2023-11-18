@@ -1,4 +1,4 @@
-import Link from "../components/Link/index";
+import Link from "../components/Link/Link";
 
 export default {
   title: "Link",

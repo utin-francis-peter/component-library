@@ -1,4 +1,4 @@
-import ToggleSwitch from "../components/ToggleSwitch/index";
+import ToggleSwitch from "../components/ToggleSwitch/ToggleSwitch";
 
 export default {
   title: "ToggleSwitch",

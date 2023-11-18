@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TextInput from "../components/TextInput/index";
+import TextInput from "../components/TextInput/TextInput";
 
 export default {
   title: "TextInput",

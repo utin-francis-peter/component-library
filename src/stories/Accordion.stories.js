@@ -1,4 +1,4 @@
-import Accordion from "../components/Accordion/index";
+import Accordion from "../components/Accordion/Accordion";
 
 export default {
   title: "Accordion",

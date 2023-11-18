@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Pagination from "../components/Pagination/index";
+import Pagination from "../components/Pagination/Pagination";
 
 export default {
   title: "Pagination",
