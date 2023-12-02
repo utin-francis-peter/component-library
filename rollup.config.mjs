@@ -13,22 +13,22 @@ const packageJson = requireFile("./package.json");
 
 export default {
   input: "./src/index.js",
-  external: ["react", "react-dom"],
+  // external: ["react", "react-dom"],
   output: [
     {
       file: packageJson.main,
       format: "cjs",
-      sourcemap: true,
+      // sourcemap: true,
     },
     {
       file: packageJson.module,
       format: "esm",
-      sourcemap: true,
+      // sourcemap: true,
     },
   ],
   plugins: [
     postcss({
-      plugins: [],
+      // plugins: [],
       minimize: true,
       inject: {
         insertAt: "top",
@@ -37,6 +37,7 @@ export default {
     babel({
       exclude: "node_modules/**",
       presets: ["@babel/preset-react"],
+      babelHelpers: "runtime",
     }),
     ,
     resolve(),

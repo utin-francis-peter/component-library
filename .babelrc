@@ -13,5 +13,5 @@
     ],
     "@babel/preset-react"
   ],
-  "plugins": ["tailwindcss/babel"]
+  "plugins": ["@babel/plugin-transform-runtime"]
 }
