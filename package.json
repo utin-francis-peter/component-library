@@ -1,6 +1,5 @@
 {
   "name": "@utin-francis-peter/react-component",
-  "private": "false",
   "version": "1.0.0",
   "repository": "https://github.com/utin-francis-peter/component-library",
   "main": "lib/cjs/index.js",
