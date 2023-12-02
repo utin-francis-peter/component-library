@@ -4,7 +4,7 @@
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "files": [
-    "lib"
+    "/lib"
   ],
   "author": "utin-francis-peter",
   "license": "MIT",
