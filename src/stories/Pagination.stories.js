@@ -19,10 +19,6 @@ export const Default = () => {
     fetchTodo();
   }, []);
   return (
-    <Pagination
-      data={data}
-      itemsPerPage={itemsPerPage}
-      setItemsPerPage={setItemsPerPage}
-    />
+    <Pagination itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
   );
 };

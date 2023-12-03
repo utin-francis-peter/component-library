@@ -23,14 +23,14 @@ const Pagination = ({ data, itemsPerPage, setItemsPerPage }) => {
   // create a loop that runs data length number of times and increments based on itemsPerPage. Within the loop, slice and push into the new structure
 
   const pageNumbers = [];
-  if (data.length > 0 && itemsPerPage) {
+  if (data?.length > 0 && itemsPerPage) {
     for (let i = 1; i <= Math.ceil(data.length / itemsPerPage); i++) {
       pageNumbers.push(i);
     }
   }
 
   useEffect(() => {
-    if (data.length > 0 && itemsPerPage) {
+    if (data?.length > 0 && itemsPerPage) {
       const newData = [];
       for (let i = 0; i < data.length; i += itemsPerPage) {
         const slicedData = data.slice(i, i + itemsPerPage);
@@ -53,12 +53,12 @@ const Pagination = ({ data, itemsPerPage, setItemsPerPage }) => {
       setLastItemIndex(newLastItemIndex);
     };
 
-    calculateIndexes();
-  }, [itemsPerPage, currentPage, data.length]);
+    data?.length > 0 && calculateIndexes();
+  }, [itemsPerPage, currentPage, data?.length]);
   return (
     <div>
-      {groupedData.length > 0 &&
-        groupedData[currentPage - 1]?.map((d, i) => <Todo key={i} todo={d} />)}
+      {groupedData?.length > 0 &&
+        groupedData[currentPage - 1]?.map((d, i) => <p key={i}>{d.title}</p>)}
 
       {/* pagination UI below */}
       <div className="bg-gray-200 flex items-center gap-10  text-gray-600 mt-5">
@@ -70,7 +70,7 @@ const Pagination = ({ data, itemsPerPage, setItemsPerPage }) => {
             onChange={(e) => {
               setItemsPerPage(Number(e.target.value));
               // then check if currentPage value is greater than the last item in pageNumbers array. If true, reset currentPage to 1
-              if (currentPage > pageNumbers.length) {
+              if (currentPage > pageNumbers?.length) {
                 setCurrentPage(1);
               }
             }}>
@@ -83,7 +83,7 @@ const Pagination = ({ data, itemsPerPage, setItemsPerPage }) => {
         </div>
 
         <p className="border-r-[1px] border-gray-300 flex-1 p-2">
-          {firstItemIndex + 1} - {lastItemIndex} of {data.length} items
+          {firstItemIndex + 1} - {lastItemIndex} of {data?.length} items
         </p>
 
         <div className="flex items-center border-r-[1px] border-gray-300 p-2">
@@ -96,7 +96,7 @@ const Pagination = ({ data, itemsPerPage, setItemsPerPage }) => {
               </option>
             ))}
           </select>
-          <p>of {pageNumbers.length} pages</p>
+          <p>of {pageNumbers?.length} pages</p>
         </div>
 
         <div className="flex items-center">
@@ -114,7 +114,7 @@ const Pagination = ({ data, itemsPerPage, setItemsPerPage }) => {
           {console.log("page numbers:", pageNumbers)} */}
 
           <button
-            disabled={currentPage == pageNumbers[pageNumbers.length - 1]}
+            disabled={currentPage == pageNumbers[pageNumbers?.length - 1]}
             onClick={() => {
               setCurrentPage(currentPage + 1);
               // check if the next currentPage would be greater than current maxItemIndex
@@ -131,7 +131,3 @@ const Pagination = ({ data, itemsPerPage, setItemsPerPage }) => {
 };
 
 export default Pagination;
-
-export const Todo = ({ todo }) => {
-  return <p>{todo.title}</p>;
-};

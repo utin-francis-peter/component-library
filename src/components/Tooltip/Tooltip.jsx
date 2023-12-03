@@ -9,7 +9,7 @@ const Tooltip = ({ children, content }) => {
   const tooltipRef = useRef(null);
   const tooltipParentRef = useRef(null);
 
-  console.log(tooltipWidth, tooltipHeight);
+  // console.log(tooltipWidth, tooltipHeight);
   /*
 1. know the total width of the tooltip content
 2. compare tooltip width to available space of parent from the left, right, top, and bottom.

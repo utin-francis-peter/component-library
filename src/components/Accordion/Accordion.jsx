@@ -8,7 +8,7 @@ const Accordion = ({ accordionList }) => {
     2.
     */
     <div>
-      {accordionList.map((item) => (
+      {accordionList?.map((item) => (
         <AccordionItem
           key={item.id}
           item={item}

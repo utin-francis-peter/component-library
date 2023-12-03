@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Tab = ({ tabNavList, variant }) => {
+const Tab = ({ tabNavList, tabContentData, variant }) => {
   const [activeTab, setActiveTab] = useState("tab1");
 
   const tabAnimation = "transition-all ease-in-out delay-100 duration-150";
@@ -18,7 +18,7 @@ const Tab = ({ tabNavList, variant }) => {
         className={`flex justify-between items-center gap-1 p-5 ${
           variant == "contained" ? "" : "w-[20%]"
         }`}>
-        {tabNavList.map((nav) => (
+        {tabNavList?.map((nav) => (
           <li
             onClick={() => setActiveTab(nav.id)}
             key={nav.id}
@@ -36,7 +36,7 @@ const Tab = ({ tabNavList, variant }) => {
 
       {/* tab body */}
       <main className="py-10 px-5">
-        {tabContentData.map((content) => {
+        {tabContentData?.map((content) => {
           if (content.id === activeTab) {
             return (
               <TabContent key={content.id} animation={tabAnimation}>
@@ -59,17 +59,17 @@ export const TabContent = ({ children, animation }) => {
 };
 
 // mock tab content data
-const tabContentData = [
-  {
-    id: "tab1",
-    contents: "I love red for whatever weird reason",
-  },
-  {
-    id: "tab2",
-    contents: "I love green for whatever weird reason",
-  },
-  {
-    id: "tab3",
-    contents: "I love blue for whatever weird reason",
-  },
-];
+// const tabContentData = [
+//   {
+//     id: "tab1",
+//     contents: "I love red for whatever weird reason",
+//   },
+//   {
+//     id: "tab2",
+//     contents: "I love green for whatever weird reason",
+//   },
+//   {
+//     id: "tab3",
+//     contents: "I love blue for whatever weird reason",
+//   },
+// ];
